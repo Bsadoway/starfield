@@ -19,7 +19,7 @@ export default class Particles extends Group {
     });
 
     // create a random set of particles
-    for (var i = 0; i < 500; i++) {
+    for (var i = 0; i < 5000; i++) {
 
       particles[i] = new Mesh(particleGeometry, particleMaterial);
 

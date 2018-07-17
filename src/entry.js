@@ -26,11 +26,13 @@ let mouse = {
   x: 0,
   y: 0
 };
+let currentAstPos;
+
 // scene
 scene.add(seedScene);
 scene.background = new Color(0x000000);
 // camera
-camera.position.set(6, 3, -10);
+camera.position.set(0, 0, -20);
 camera.lookAt(new Vector3(0, 0, 0));
 
 // renderer
@@ -61,6 +63,7 @@ window.addEventListener('resize', windowResizeHanlder);
 document.body.style.margin = 0;
 document.body.appendChild(renderer.domElement);
 document.addEventListener('mousemove', onMouseMove, false);
+document.addEventListener('mousedown', onMouseDown, false);
 
 function onMouseMove(event) {
   const asteroid = scene.getObjectByName("asteroid");
@@ -78,3 +81,16 @@ function onMouseMove(event) {
   var pos = camera.position.clone().add(dir.multiplyScalar(distance));
   asteroid.position.copy(pos);
 };
+
+function onMouseDown(event) {
+  const asteroid = scene.getObjectByName("asteroid");
+  currentAstPos = asteroid.position.z;
+  event.preventDefault();
+  
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  // push object along  z axis
+  asteroid.position.z += 100;
+  // TODO check for collision with stars
+  // after relase bounce back to origin position
+}

@@ -1,7 +1,6 @@
 import {
   Group
 } from 'three';
-import Land from './Land/Land.js';
 import BasicLights from './Lights.js';
 import Particles from './Particles.js';
 import Asteroid from './Asteroid.js';
@@ -10,7 +9,6 @@ export default class SeedScene extends Group {
   constructor() {
     super();
 
-    const land = new Land();
     const lights = new BasicLights();
     const particles = new Particles();
     const asteroid = new Asteroid();
@@ -20,7 +18,7 @@ export default class SeedScene extends Group {
 
   update(timeStamp) {
     
-    for (var i = 0; i < 500; i++) {
+    for (var i = 0; i < 5000; i++) {
       var star = this.children[1].children[i];
       star.position.x += star.direction.x;
       star.position.y += star.direction.y;
