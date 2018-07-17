@@ -1,44 +1,39 @@
 import {
-  Geometry,
-  PointsMaterial,
-  Vector3,
-  Vertex,
+  Mesh,
   Group,
-  Points
+  MeshBasicMaterial,
+  
+  SphereGeometry
 } from 'three';
 
 export default class Particles extends Group {
   constructor() {
     super();
+    var particles = [];
 
-    var particleCount = 1800,
-      particles = new Geometry(),
-      pMaterial = new PointsMaterial({
+    var particleGeometry = new SphereGeometry(5, 10, 10); // size, number of polys to form this circle
+    var particleMaterial = new MeshBasicMaterial({
         color: 0xFFFFFF,
-        size: 1
-      });
+        transparent: true,
+        opacity: 0.5
+    });
 
-    // now create the individual particles
-    for (var p = 0; p < particleCount; p++) {
+    // create a random set of particles
+    for (var i = 0; i < 500; i++) {
 
-      // create a particle with random
-      // position values, -250 -> 250
-      var pX = Math.random() * 500 - 250,
-        pY = Math.random() * 500 - 250,
-        pZ = Math.random() * 500 - 250,
-        particle = new Vector3(pX, pY, pZ);
+        particles[i] = new Mesh( particleGeometry, particleMaterial );
 
-      // add it to the geometry
-      particles.vertices.push(particle);
+        //randomize positions
+        particles[i].position.x = Math.random() * window.innerWidth * 2 - window.innerWidth;;
+        particles[i].position.y = Math.random() * window.innerHeight * 2 - window.innerHeight;
+        particles[i].position.z = Math.random() * window.innerWidth * 2 - window.innerWidth;
+
+        particles[i].direction = {
+            x: Math.random(),
+            y: Math.random()
+        }
+
+        this.add(particles[i]);
     }
-
-    // create the particle system
-    var particleSystem = new Points(
-      particles,
-      pMaterial);
-
-
-    this.add(particleSystem);
   }
-
 }

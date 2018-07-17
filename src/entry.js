@@ -7,7 +7,7 @@
  * 
  */
 
-import { WebGLRenderer, PerspectiveCamera, Scene, Vector3 } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Scene, Vector3, Color } from 'three';
 import SeedScene from './objects/Scene.js';
 
 const scene = new Scene();
@@ -17,14 +17,13 @@ const seedScene = new SeedScene();
 
 // scene
 scene.add(seedScene);
-
+scene.background = new Color( 0x000000 );
 // camera
 camera.position.set(6,3,-10);
 camera.lookAt(new Vector3(0,0,0));
 
 // renderer
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setClearColor(0x7ec0ee, 1);
 
 // render loop
 const onAnimationFrameHandler = (timeStamp) => {
