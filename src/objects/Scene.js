@@ -4,6 +4,7 @@ import {
 import Land from './Land/Land.js';
 import BasicLights from './Lights.js';
 import Particles from './Particles.js';
+import Asteroid from './Asteroid.js';
 
 export default class SeedScene extends Group {
   constructor() {
@@ -12,8 +13,9 @@ export default class SeedScene extends Group {
     const land = new Land();
     const lights = new BasicLights();
     const particles = new Particles();
+    const asteroid = new Asteroid();
 
-    this.add(lights, particles);
+    this.add(lights, particles,asteroid);
   }
 
   update(timeStamp) {
@@ -33,6 +35,6 @@ export default class SeedScene extends Group {
         star.direction.y = -star.direction.y;
       }
     }
-    this.rotation.y = timeStamp / 10000;
+    // this.rotation.y = timeStamp / 10000;
   }
 }

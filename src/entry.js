@@ -7,20 +7,31 @@
  * 
  */
 
-import { WebGLRenderer, PerspectiveCamera, Scene, Vector3, Color } from 'three';
+import {
+  WebGLRenderer,
+  PerspectiveCamera,
+  Scene,
+  Vector3,
+  Color
+} from 'three';
 import SeedScene from './objects/Scene.js';
 
 const scene = new Scene();
 const camera = new PerspectiveCamera();
-const renderer = new WebGLRenderer({antialias: true});
+const renderer = new WebGLRenderer({
+  antialias: true
+});
 const seedScene = new SeedScene();
-
+let mouse = {
+  x: 0,
+  y: 0
+};
 // scene
 scene.add(seedScene);
-scene.background = new Color( 0x000000 );
+scene.background = new Color(0x000000);
 // camera
-camera.position.set(6,3,-10);
-camera.lookAt(new Vector3(0,0,0));
+camera.position.set(6, 3, -10);
+camera.lookAt(new Vector3(0, 0, 0));
 
 // renderer
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -34,8 +45,11 @@ const onAnimationFrameHandler = (timeStamp) => {
 window.requestAnimationFrame(onAnimationFrameHandler);
 
 // resize
-const windowResizeHanlder = () => { 
-  const { innerHeight, innerWidth } = window;
+const windowResizeHanlder = () => {
+  const {
+    innerHeight,
+    innerWidth
+  } = window;
   renderer.setSize(innerWidth, innerHeight);
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
@@ -45,5 +59,22 @@ window.addEventListener('resize', windowResizeHanlder);
 
 // dom
 document.body.style.margin = 0;
-document.body.appendChild( renderer.domElement );
+document.body.appendChild(renderer.domElement);
+document.addEventListener('mousemove', onMouseMove, false);
 
+function onMouseMove(event) {
+  const asteroid = scene.getObjectByName("asteroid");
+
+  // Update the mouse variable
+  event.preventDefault();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Make the sphere follow the mouse
+  var vector = new Vector3(mouse.x, mouse.y, 0.5);
+  vector.unproject(camera);
+  var dir = vector.sub(camera.position).normalize();
+  var distance = -camera.position.z / dir.z;
+  var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+  asteroid.position.copy(pos);
+};
